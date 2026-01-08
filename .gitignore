@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+.ipynb_checkpoints/
+.env
+*.pyc
+
+# virtual environment
+venv/
+
+# ignore all models
+models/*.pkl
+
+# but keep deployed model
+!models/xgboost.pkl

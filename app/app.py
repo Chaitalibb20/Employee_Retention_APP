@@ -7,9 +7,8 @@ import os
 # Load trained model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "xgboost.pkl")
-
-model = joblib.load(MODEL_PATH)
+MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "xgboost_pipeline.pkl")
+model = joblib.load("models/xgboost_pipeline.pkl")
 
 st.set_page_config(
     page_title="Employee Retention Prediction",
@@ -104,21 +103,24 @@ training_hours = st.number_input(
 # Prediction
 
 if st.button("Predict Job Change"):
-    input_df = pd.DataFrame({
-        "enrollee_id": [enrollee_id],
-        "city": [city],
-        "city_development_index": [city_development_index],
-        "gender": [gender],
-        "relevent_experience": [relevent_experience],
-        "enrolled_university": [enrolled_university],
-        "education_level": [education_level],
-        "major_discipline": [major_discipline],
-        "experience": [experience],
-        "company_size": [company_size],
-        "company_type": [company_type],
-        "last_new_job": [last_new_job],
-        "training_hours": [training_hours]
-    })
+
+    input_dict = {
+        "enrollee_id": enrollee_id,
+        "city": city,
+        "city_development_index": city_development_index,
+        "gender": gender,
+        "relevent_experience": relevent_experience,
+        "enrolled_university": enrolled_university,
+        "education_level": education_level,
+        "major_discipline": major_discipline,
+        "experience": experience,
+        "company_size": company_size,
+        "company_type": company_type,
+        "last_new_job": last_new_job,
+        "training_hours": training_hours
+    }
+
+    input_df = pd.DataFrame([input_dict])
 
     prediction = model.predict(input_df)[0]
     probability = model.predict_proba(input_df)[0][1]
@@ -126,12 +128,6 @@ if st.button("Predict Job Change"):
     st.subheader("Prediction Result")
 
     if prediction == 1:
-        st.error(
-            f"Employee is likely to look for a job change "
-            f"(Probability: {probability:.2f})"
-        )
+        st.error(f"Employee is LIKELY to change job (Probability: {probability:.2f})")
     else:
-        st.success(
-            f"Employee is unlikely to look for a job change "
-            f"(Probability: {probability:.2f})"
-        )
+        st.success(f"Employee is UNLIKELY to change job (Probability: {probability:.2f})")

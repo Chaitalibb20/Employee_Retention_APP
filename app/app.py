@@ -7,7 +7,7 @@ import os
 # Load trained model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "xgboost_pipeline.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "xgboost.pkl")
 
 model = joblib.load(MODEL_PATH)
 

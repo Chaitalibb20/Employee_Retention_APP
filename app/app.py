@@ -8,7 +8,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "xgboost_pipeline.pkl")
-model = joblib.load("models/xgboost_pipeline.pkl")
+
+model = joblib.load(MODEL_PATH)
 
 st.set_page_config(
     page_title="Employee Retention Prediction",
